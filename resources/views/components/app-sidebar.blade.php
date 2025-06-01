@@ -216,12 +216,11 @@
                     </ul>
                 </li>
                 <li class="slide">
-                    <a href="#" onclick="return confirm('Comming Soon !');"
+                    <a href="{{ route('education') }}"
                         class="side-menu__item {{ request()->is('education') ? 'active' : '' }}">
                         <i class="bx bx-user-pin side-menu__icon"></i>
                         <span class="side-menu__label">Educational Pin</span>
                     </a>
-                </li>
                 </li>
                 <!-- Start::slide -->
                 @if (Auth::user()->role == 'agent')
@@ -286,7 +285,43 @@
                     </a>
                 </li>
 
+                <li class="slide">
+                    <a href="{{ route('donation') }}"
+                        class="side-menu__item {{ request()->is('donation') ? 'donation' : '' }}">
+                        <i class="bx bx-user-circle side-menu__icon"></i>
+                        <span class="side-menu__label">Donation</span>
+                    </a>
+                </li>
 
+
+                <li class="slide">
+                    <a href="{{ route('loan') }}"
+                        class="side-menu__item {{ request()->is('loan') ? 'loan' : '' }}">
+                        <i class="bx bx-wallet side-menu__icon"></i>
+                        <span class="side-menu__label">Loan</span>
+                    </a>
+                </li>
+
+   
+                <li class="slide">
+                    <a href="{{ route('activation.show') }}"
+                        class="side-menu__item {{ request()->is('activation') ? 'activation' : '' }}">
+                        <i class="bx bx-user-circle side-menu__icon"></i>
+                        <span class="side-menu__label">Activation</span>
+                    </a>
+                </li>
+
+
+                
+                <li class="slide">
+                    <a href="{{ route('profile.edit') }}"
+                        class="side-menu__item {{ request()->is('profile') ? 'active' : '' }}">
+                        <i class="bx bx-cog side-menu__icon"></i>
+                        <span class="side-menu__label">Settings</span>
+                    </a>
+                </li>
+                 
+                
                 <li class="slide">
                     <a href="{{ route('support') }}" target="_blank"
                         class="side-menu__item {{ request()->is('support') ? 'active' : '' }}">
@@ -295,21 +330,6 @@
                     </a>
                 </li>
 
-                <li class="slide">
-                    <a href="{{ route('profile.edit') }}"
-                        class="side-menu__item {{ request()->is('profile') ? 'active' : '' }}">
-                        <i class="bx bx-cog side-menu__icon"></i>
-                        <span class="side-menu__label">Settings</span>
-                    </a>
-                </li>
-
-                <li class="slide">
-                    <a href="{{ route('activation.show') }}"
-                        class="side-menu__item {{ request()->is('activation') ? 'activation' : '' }}">
-                        <i class="bx bx-user-circle side-menu__icon"></i>
-                        <span class="side-menu__label">Activation</span>
-                    </a>
-                </li>
 
                 <li class="slide">
                     <form method="POST" action="{{ route('logout') }}">

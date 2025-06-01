@@ -1,63 +1,77 @@
 @extends('layouts.auth')
-@section('title', 'Forget Password')
+
+@section('title', 'Forgot Password')
+
 @section('content')
-    <div class="container-lg">
-        <div class="row justify-content-center align-items-center authentication authentication-basic h-100">
-            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
-                <div class="card custom-card">
-                    <div class="card-body p-5">
+<link href="{{ asset('assets/css1/style.css') }}" rel="stylesheet" id="style">
+<link href="{{ asset('assets/css1/style1.css') }}" rel="stylesheet" id="style">
+<style>
+body {
+    background: url("{{ asset('assets/images/authentication/background01.png') }}");
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,0.08) inset;
+}
+</style>
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <a href="{{ route('login') }}">
+                <img src="{{ asset('assets/images/brand-logos/logo-dark.png') }}" alt="Logo" class="auth-logo">
+            </a>
+            <h4 class="auth-title">Forgot Password?</h4>
+            <p class="auth-description">
+                Enter your email and we'll send you a password reset link.
+            </p>
+        </div>
 
-                        <div class="my-2 d-flex justify-content-center">
-                            <a href="{{ route('login') }}">
-                                <img src="{{ asset('assets/images/brand-logos/logo.png') }}" alt="logo"
-                                    class="desktop-logo" style="width:60px; height:55px">
-                                <img src="{{ asset('assets/images/brand-logos/logo-dark.jpg') }}" alt="logo"
-                                    class="desktop-dark" style="width:60px; height:55px">
-                            </a>
-                        </div>
-                        <p class="mb-4 text-muted op-7 fw-normal text-center"> Forgot your password? No problem. Just let us
-                            know your email address and we will email you a password reset link that will allow you to
-                            choose a new one. </p>
-
-                        <!-- Session Status -->
-                        @if (session('status'))
-                            <div class="alert alert-success alert-dismissible shadow-sm" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible shadow-sm" role="alert">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <!-- End Session Status -->
-
-                        <form method="POST" action="{{ route('password.email') }}" class="needs-validation" novalidate>
-                            @csrf
-                            <div class="row gy-3">
-                                <div class="col-xl-12">
-                                    <label for="signin-username" class="form-label text-default">Email ID</label>
-                                    <input type="email" class="form-control form-control-lg" id="email" name="email"
-                                        placeholder="Email Address" autofocus required />
-                                </div>
-                                <div class="col-xl-12 d-grid mt-3">
-                                    <button type="submit" id="reset" class="btn btn-lg btn-primary">Email Password
-                                        Reset Link</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <!-- Session Status -->
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
+
+        <!-- Validation Errors -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Password Reset Form -->
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+            <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control form-control-lg" id="email" name="email" 
+                       placeholder="Enter your email" required autofocus>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-default btn-lg shadow-sm w-100">
+                    Send Password Reset Link
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="text-muted mb-0">
+                Remember your password? <a href="{{ route('login') }}" class="text-primary">Sign In</a>
+            </p>
         </div>
     </div>
+</div>
 @endsection
 
 @push('page-js')
-    <script src="{{ asset('assets/js/passwordReset.js') }}"></script>
+<script src="{{ asset('assets/js/passwordReset.js') }}"></script>
 @endpush

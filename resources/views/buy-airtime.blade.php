@@ -20,7 +20,6 @@
                 @php
                     $services = [
                         ['route' => route('more-services', 'funding'), 'icon' => 'fund.png', 'title' => 'Fund Wallet'],
-                        ['route' => route('more-services', 'transfer'), 'icon' => 'transfer.png', 'title' => 'Transfer'],
                         ['route' => route('more-services', 'data'), 'icon' => 'data.png', 'title' => 'Buy Internet Data'],
                      ];
                 @endphp
@@ -121,7 +120,7 @@
                                                                 </div>
                                                             </div>
                                                             <button type="submit" id="buy-airtime"
-                                                                class="btn btn-primary"><i class="las la-shopping-cart"></i>
+                                                                class="btn btn-default btn-lg shadow-sm w-100"><i class="las la-shopping-cart"></i>
                                                                 Buy
                                                                 Airtime</button>
                                                         </form>
@@ -210,8 +209,19 @@
             </div>
         </div>
     </div>
-@endsection
 
+
+
+ <div class="col-12">
+                <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0">
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="row g-3 justify-content-center">
+                        </div>
+                    </div>
+                </div>
+
+@endsection
 
 @push('page-js')
     <script>

@@ -2,13 +2,28 @@
 @section('title', 'Verify Email')
 @section('content')
         <div class="container-lg">
+            <link href="{{ asset('assets/css1/style1.css') }}" rel="stylesheet" id="style">
+            <link href="{{ asset('assets/css1/style.css') }}" rel="stylesheet" id="style">
+
+            <style>
+body {
+    background: url("{{ asset('assets/images/authentication/background01.png') }}");
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,0.08) inset;
+}
+</style>
+
+
             <div class="row justify-content-center align-items-center authentication authentication-basic h-100">
                 <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
                     <div class="card custom-card">
                         <div class="card-body p-5">
                              <div class="my-2 d-flex justify-content-center">
                          <a href="../" >
-                        <img src="{{ asset('assets/images/brand-logos/logo.png')}}" alt="logo" class="desktop-logo" style="width:60px; height:55px">
+                        <img src="{{ asset('assets/images/brand-logos/logo-dark.png')}}" alt="logo" class="desktop-logo" style="width:60px; height:55px">
                         <img src="{{ asset('assets/images/brand-logos/logo-dark.jpg')}}" alt="logo" class="desktop-dark"  style="width:60px; height:55px">
                     </a>  </div>
                             <p class="mb-4 text-muted op-7 fw-normal text-center">Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.</p>

@@ -1,20 +1,37 @@
 @extends('layouts.auth')
-@section('title', 'Login')
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center align-items-center authentication authentication-basic h-100">
-            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
 
-                <div class="card custom-card">
-                    <div class="card-body p-5">
-                        <div class="my-2 d-flex justify-content-center">
-                            <a href="../">
-                                <img src="{{ asset('assets/images/brand-logos/logo.png') }}" alt="logo"
-                                    class="desktop-logo" style="width:60px; height:55px">
-                                <img src="{{ asset('assets/images/brand-logos/logo-dark.jpg') }}" alt="logo"
-                                    class="desktop-dark" style="width:60px; height:55px">
-                            </a>
+@section('title', 'Sign Up')
+
+@section('content')
+
+<link href="{{ asset('assets/css1/style.css') }}" rel="stylesheet" id="style">
+<link href="{{ asset('assets/css1/style1.css') }}" rel="stylesheet" id="style">
+<style>
+body {
+    background: url("{{ asset('assets/images/authentication/background01.png') }}");
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,0.08) inset;
+}
+</style>
+
+<div class="container-lg auth-container">
+    <div class="row justify-content-center align-items-center">
+        <!-- Registration Form Column -->
+        <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-8 col-sm-10 registration-column">
+            <div class="card custom-card">
+                <div class="card-body p-4 p-md-5">
+
+                    @if (session()->has('status'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                            {{ session()->get('status') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    @endif
+
+                 <img src="{{ asset('assets/images/brand-logos/logo-dark.png') }}" alt="Logo" class="mb-3" style="max-width: 50px;">
                         <p class="h5 fw-semibold mb-2 text-center">Sign In</p>
                         <p class="mb-4 text-muted op-7 fw-normal text-center">Welcome back !</p>
                         @if (session()->has('status'))
@@ -77,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-12 d-grid mt-2">
-                                    <button type="button" id="btnlogin" class="btn btn-lg btn-primary btn-pry"
+                                    <button type="button" id="btnlogin" class="btn btn-default btn-lg shadow-sm w-100"
                                         tabindex="4"> Sign In
                                         <div class="lds-ring" id="spinner">
                                             <div></div>
@@ -93,11 +110,21 @@
                             <p class="fs-12 text-muted mt-3">Dont have an account? <a href="{{ route('register') }}"
                                     class="text-primary">Sign Up</a></p>
                         </div>
-                    </div>
                 </div>
+        </div>
+    </div>
+
+        <!-- Advert Container: Only visible on desktop view -->
+        <div class="col-xxl-5 col-xl-5 col-lg-5 d-none d-lg-flex">
+            <div class="advert-container">
+                <img src="{{ asset('assets/images/verify-bank.jpg') }}" alt="Special Offer">
+                <h4 class="mt-2">Special Offer!</h4>
+                <p class="text-center">Join now and get exclusive access to our premium features. Don't miss out on our limited-time welcome bonus for new users!</p>
             </div>
         </div>
     </div>
+</div>
+
 @endsection
 @push('page-js')
     <script src="{{ asset('assets/js/auth.js') }}"></script>

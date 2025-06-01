@@ -1,5 +1,8 @@
 <?php
 
+
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ActivationController;
 use App\Http\Controllers\Action\AgencyController;
 use App\Http\Controllers\Action\BankVerificationController;
@@ -84,8 +87,19 @@ Route::middleware('auth', 'verified', 'is_kyced')->group(function () {
     Route::get('/activate', [ActivationController::class, 'show'])->name('activation.show');
     Route::post('/activate', [ActivationController::class, 'activate'])->name('activation.activate');
 
+    Route::get('/address/validate', [AddressController::class, 'index'])->name('address.validate');
+    Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/address/lgas/{state}', [AddressController::class, 'getLgas']);
+    Route::get('/address/popular-addresses/{lga}', [AddressController::class, 'getPopularAddresses']);
 
 
+    //donation
+    Route::get('/donation', [DonationController::class, 'index'])->name('donation');
+
+    //Loan
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/loan', [LoanController::class, 'index'])->name('loan');
+       });
 
 
     //BVN Verify
