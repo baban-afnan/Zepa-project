@@ -2,6 +2,8 @@
 @section('title', 'Reset Password')
 @section('content')
     <div class="container-lg">
+        <link href="{{ asset('assets/css1/style1.css') }}" rel="stylesheet" id="style">
+        <link href="{{ asset('assets/css1/style.css') }}" rel="stylesheet" id="style">
         <div class="row justify-content-center align-items-center authentication authentication-basic h-100">
             <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
                 <div class="card custom-card">
@@ -10,13 +12,13 @@
                             <a href="{{ route('login') }}">
                                 <img src="{{ asset('assets/images/brand-logos/logo.png') }}" alt="logo"
                                     class="desktop-logo" style="width:60px; height:55px">
-                                <img src="{{ asset('assets/images/brand-logos/logo-dark.jpg') }}" alt="logo"
+                                <img src="{{ asset('assets/images/brand-logos/logo-dark.png') }}" alt="logo"
                                     class="desktop-dark" style="width:60px; height:55px">
                             </a>
                         </div>
                         <p class="h5 fw-semibold mb-2 text-center">Reset Password</p>
                         <!-- Session Status -->
-                        @if ($errors->any())
+                        @if ($errors && $errors->any())
                             <div class="alert alert-danger alert-dismissible shadow-sm" role="alert">
                                 <ul>
                                     @foreach ($errors->all() as $error)

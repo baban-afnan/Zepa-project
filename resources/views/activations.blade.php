@@ -1,18 +1,20 @@
 @extends('layouts.dashboard')
-@section('title', 'Settings')
+@section('title', 'activation')
 @section('content')
     <div class="page">
-
         @include('components.app-header')
-
         @include('components.app-sidebar')
+        @include('address.modal')
 
-        <div class="main-content app-content custom-margin-top">
+        <!-- CSS -->
+        <link href="{{ asset('assets/css1/style.css') }}" rel="stylesheet" id="style">
+
+        <!-- Main Content -->
+        <div class="main-content app-content">
             <div class="container-fluid">
 
-                <!-- Start::Password Update Section -->
-                <div class="row mt-4">
-
+           
+              
                     <div class="col-xxl-12  col-md-12">
                          @if (session('message'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,276 +39,255 @@
                                 @endif
                         <div class="card custom-card mb-4">
                             
-                            <div class="card-header">
-                                <h5 class="card-title">Profile</h5>
-                            </div>
-                            <div class="card-body">
-                                
-                               <div class="text-center mb-3">
-               @if (Auth::user()->profile_pic != '')
-                                 <img alt="img" width="100" height="100" class="rounded-circle"
-                                     src="{{ 'data:image/;base64,' . Auth::user()->profile_pic }}">
-                             @else
-                                 <img alt="img" width="50" height="50" class="rounded-circle"
-                                     src="{{ asset('assets/images/zepa-logo.jpg') }}" alt="">
-                             @endif
-                <h4 class="mt-2">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h4>
-                 <span class="badge bg-primary rounded text-white px-3 py-2">{{ ucfirst(Auth::user()->role) }}</span>
-            </div>
-
-            <form method="POST" action="{{ route('profile.update') }}"  enctype="multipart/form-data">
-                @csrf
-
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email" class="form-control" value="{{ Auth::user()->email }}" disabled>
-                </div>
-
-                <div class="mb-3">
-                    <label>Phone Number</label>
-                    <input type="text" name="phone_number" class="form-control" value="{{ Auth::user()->phone_number }}">
-                </div>
-
-                <div class="mb-3">
-                    <label>Gender</label>
-                    <select name="gender" class="form-control">
-                        <option value="Male" {{ Auth::user()->gender === 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ Auth::user()->gender === 'Female' ? 'selected' : '' }}>Female</option>
-                    </select>
-                </div>
-
-                  <div class="mb-3">
-                                            <label for="profile_pic" class="form-label">Change Profile Picture</label>
-                                            <input type="file" class="form-control" name="profile_pic" id="profile_pic">
-                                        </div>
-
-                <button type="submit" class="btn btn-primary">Update Profile</button>
-            </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xxl-12  col-md-6">
-                        <div class="card custom-card mb-4">
-                            <div class="card-header">
-                                <h5 class="card-title">Update Password</h5>
-                            </div>
-                            <div class="card-body">
-                                @if (session('status'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        Password Update Successful.
+                          
+<!-- main page content -->
+<div class="main-container container pt-0">
+    <!-- notification list -->
+    <div class="row">
+        <div class="col-12 px-0">
+            <div class="list-group list-group-flush bg-none">
+                <a class="list-group-item bg-white">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="card">
+                                <div class="card-body p-1">
+                                    <div class="avatar avatar-50 coverimg rounded-15">
+                                        <img src="assets/images/bvn1.png" alt="">
                                     </div>
-                                @endif
-
-                                <form method="post" action="{{ route('profile.password') }}">
-                                    @csrf
-                                    @method('put')
-                                    <div class="mb-3">
-                                        <label for="current_password" class="form-label">Current Password</label>
-                                        <input type="password" class="form-control" id="current_password"
-                                            name="current_password" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="new_password" class="form-label">New Password</label>
-                                        <input type="password" class="form-control" id="new_password" name="new_password"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="new_password_confirmation" class="form-label">Confirm New
-                                            Password</label>
-                                        <input type="password" class="form-control" id="new_password_confirmation"
-                                            name="new_password_confirmation" required>
-                                    </div>
-                                    <button type="submit" id="change_password" class="btn btn-primary">Update
-                                        Password</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Start::PIN Modification Section -->
-
-                    <div class="col-xxl-12  col-md-6">
-                        <div class="card custom-card mb-4">
-                            <div class="card-header">
-                                <h5 class="card-title">Create/Update Transaction PIN</h5>
-                            </div>
-                            <div class="card-body" style="margin-bottom:105px;">
-                                <small class="text-dark">To create or update your PIN, enter your password and the One-Time
-                                    Password (OTP) sent to your registered email."</small>
-                                <div class="mb-2 mt-2" id="errMsg"></div>
-                                <form id="update-pin-form">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="password_for_pin" class="form-label">Enter Your Password</label>
-                                        <input type="password" class="form-control" id="password_for_pin" name="password"
-                                            required>
-                                    </div>
-                                    <button type="submit" id="send-otp" class="btn btn-primary"> Send OTP
-                                        <div class="lds-ring" id="spinner">
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                        </div>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- OTP Modal -->
-                    <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-2" id="modal_err"></div>
-                                    <form id="otp-form">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <p>OTP sent to your registered email address. Please check your inbox. <br />
-                                            </p>
-                                            <label for="otp" class="form-label">OTP</label>
-                                            <input type="text" class="form-control" maxlength="6" id="otp"
-                                                name="otp" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="new_pin" class="form-label">New PIN</label>
-                                            <input type="text" class="form-control" maxlength="4" id="new_pin"
-                                                name="pin" required>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="verify-otp">Verify OTP
-                                        <div class="lds-ring" id="spinner2">
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                        </div>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
-
-                    @if (Auth::user()->role != 'agent')
-                        <div class="col-xxl-12  col-md-6">
-                            <div class="card custom-card">
-
-                                <div class="card-header">
-                                    <h5 class="card-title"> Account Upgrade</h5>
-                                </div>
-                                <div class="card-body">
-
-                                    <div class="alert alert-danger alert-dismissible text-center" id="errorMsg"
-                                        style="display:none;" role="alert">
-                                        <small id="message">Processing your request.</small>
-                                    </div>
-                                    <div class="alert alert-success alert-dismissible text-center" id="successMsg"
-                                        style="display:none;" role="alert">
-                                        <small id="smessage">Processing your request.</small>
-                                    </div>
-
-
-                                    <form id="form" name="form">
-                                        @csrf
-                                        <fieldset>
-                                            <p class="text-center">Upgrade your account now and unlock access to our
-                                                exclusive agency services. Take your experience to the next level!</p>
-                                            <div class="mb-3 col-md-12">
-                                                <select id="type" name="type"
-                                                    class="form-select mt-3 text-center">
-                                                    <option value=""> --- Select Package---</option>
-                                                    <option value="agent">Agent Package </option>
-                                                </select>
-                                            </div>
-                                            <center>
-                                                <button type="button" id="upgrade" class="btn btn-primary mb-3"><i
-                                                        class="las la-sync-alt"></i> Activate Now</button>
-                                            </center>
-
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="col align-self-center ps-0">
+                            <p class="mb-1"><b>Validate your BVN now</b>, <b> and unlock full access to your account for easy transactions.
+                                      Plus, enjoy a withdrawal limit of 
+                                 </b> and <b>₦50,000 daily and up to ₦20,000 per transaction!</b>
+                                 complete your BVN validation and start transacting freely!</p>
+                            <p class="size-12 text-secondary">Level 1</p>
+                            <button class="btn btn-default mt-2" data-bs-toggle="modal" data-bs-target="#validateBvnModal">Validate Now</button>
                         </div>
-                    @endif
-
-                    <!-- Start::Notification Settings Section -->
-
-                    <div class="col-xxl-12  col-md-6">
-                        <div class="card custom-card mb-4">
-                            <div class="card-header">
-                                <h5 class="card-title">Notification Settings</h5>
-                            </div>
-                            <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                                <form method="post" action="{{ route('notification.update') }}">
-                                    @csrf
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="notification_sound"
-                                            name="notification_sound">
-                                        <label class="form-check-label" for="notification_sound">
-                                            Enable Notification Sound
-                                        </label>
-                                    </div>
-                                    <button type="submit" id="notify" class="btn btn-primary mt-3">Save
-                                        Setting</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-
-
+                      </div>
+                    </a>
+                <div class="list-group-item bg-light text-center py-2 text-mute">Upgrade highier</div>
             </div>
         </div>
-        <!-- End::row-1 -->
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="validateBvnModal" tabindex="-1" aria-labelledby="validateBvnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="validateBvnModalLabel">Validate BVN</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="bvn" class="form-label">BVN</label>
+                        <input type="text" class="form-control" id="bvn" name="bvn" placeholder="Enter your BVN" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-default">Validate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- main page content -->
+<div class="main-container container pt-0">
+<!-- Start NIN Validation list -->
+<div class="row">
+    <div class="col-12 px-0">
+        <div class="list-group list-group-flush bg-none">
+            <a class="list-group-item bg-white">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-body p-1">
+                                <div class="avatar avatar-50 coverimg rounded-15">
+                                    <img src="assets/images/nimc2.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col align-self-center ps-0">
+                        <p class="mb-1"><b>Add your NIN now</b>, <b> and unlock full access to your account for easy transactions.
+                              Plus, enjoy a withdrawal limit of 
+                         </b> and <b>₦50,000 daily and up to ₦20,000 per transaction!</b>
+                         complete your BVN validation and start transacting freely!</p>
+                        <p class="size-12 text-secondary">Level 2</p>
+                        <button class="btn btn-default mt-2" data-bs-toggle="modal" data-bs-target="#validateninModal">Validate Now</button>
+                        </div>
+                      </div>
+                    </a>
+                <div class="list-group-item bg-light text-center py-2 text-mute">Upgrade highier</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="validateninModal" tabindex="-1" aria-labelledby="validateNinModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="validateNinModalLabel">Validate NIN</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nin" class="form-label">NIN</label>
+                        <input type="text" class="form-control" id="nin" name="nin" placeholder="Enter your NIN" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-default">Validate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- main page content -->
+<div class="main-container container pt-0">
+<!-- Start NIN Validation list -->
+<div class="row">
+    <div class="col-12 px-0">
+        <div class="list-group list-group-flush bg-none">
+            <a class="list-group-item bg-white">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-body p-1">
+                                <div class="avatar avatar-50 coverimg rounded-15">
+                                    <img src="assets/images/address.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col align-self-center ps-0">
+                        <p class="mb-1"><b>Add Verify Address</b>, <b> and unlock full access to your account for easy transactions.
+                              Plus, enjoy a withdrawal limit of 
+                         </b> and <b>unlimited wallet balance and transactions</b>
+                         complete your BVN validation and start transacting freely!</p>
+                        <p class="size-12 text-secondary">Level 3</p>
+                        <button class="btn btn-default mt-2" data-bs-toggle="modal" data-bs-target="#addressModal">Validate Now</button>
+                        </div>
+                      </div>
+                    </a>
+                <div class="list-group-item bg-light text-center py-2 text-mute">Upgrade highier</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Auth::user()->role != 'agent')
+<div class="main-container container pt-0">
+    <!-- Start NIN Validation list -->
+    <div class="row"></div>
+        <div class="col-12 px-0">
+            <div class="list-group list-group-flush bg-none">
+                <a class="list-group-item bg-white">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="card">
+                                <div class="card-body p-1">
+                                    <div class="avatar avatar-50 coverimg rounded-15">
+                                        <img src="assets/images/agent.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col align-self-center ps-0">
+                            <p class="mb-1"><b>Convert to agent</b>, <b> and unlock full access to your account for easy transactions.
+                                  Plus, gain access to BVN modification, NIN modification, and other important agency services.
+                             </b> and <b>unlimited wallet balance and transactions</b>
+                             upgrade your account now and start transacting freely!</p>
+                            <p class="size-12 text-secondary">Agent parkage</p>
+
+                            <div class="alert alert-danger alert-dismissible text-center" id="errorMsg" style="display:none;" role="alert">
+                                <small id="message">Processing your request.</small>
+                            </div>
+                            <div class="alert alert-success alert-dismissible text-center" id="successMsg" style="display:none;" role="alert">
+                                <small id="smessage">Processing your request.</small>
+                            </div>
+
+                            <form id="form" name="form">
+                                @csrf
+                                <fieldset>
+                                    <div class="d-flex align-items-center">
+                                        <select id="type" name="type" class="form-select me-2">
+                                            <option value="">--- Select Package ---</option>
+                                            <option value="agent">Agent Package</option>
+                                        </select>
+                                        <button type="button" id="upgrade" class="btn btn-default"><i class="las la-sync-alt"></i> Activate Now</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-12"></div>
+        <button class="btn btn-default btn-lg shadow-sm w-100" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</button>
+    </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Here are the terms and conditions...</p>
+                <ul>
+                    <li>Condition 1: Lorem ipsum dolor sit amet.</li>
+                    <li>Condition 2: Consectetur adipiscing elit.</li>
+                    <li>Condition 3: Integer nec odio. Praesent libero.</li>
+                    <li>Condition 4: Sed cursus ante dapibus diam.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="col-12">
+                <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0">
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="row g-3 justify-content-center">
+                        </div>
+                    </div>
+                </div>
+
+
+   
+</div>
 @endsection
-@push('page-js')
-    <script>
-        const pinVerifyRoute = @json(route('pin.verify'));
-        const pinUpdateRoute = @json(route('pin.update'));
-    </script>
-    <script src="{{ asset('assets/js/settings.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const submitButton = document.getElementById('change_password');
-
-            form.addEventListener('submit', function(event) {
-                // Ensure form submission does not happen multiple times
-                if (!submitButton.disabled) {
-                    submitButton.disabled = true;
-                    submitButton.innerText = 'Processing request...';
-                }
-            });
-
-            // Optional: If you have a notify button that triggers another action
-            const notifyButton = document.getElementById('notify');
-            notifyButton.addEventListener('submit', function() {
-                notifyButton.disabled = true;
-                notifyButton.innerText = 'Processing request...';
-            });
-        });
-    </script>
-@endpush
+@endif

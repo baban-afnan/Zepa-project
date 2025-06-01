@@ -50,7 +50,7 @@
                             @endphp
 
                             @foreach($services as $service)
-                                <div class="col-6 col-sm-4 col-md-3 col-lg-3 text-center">
+                                <div class="col-4 col-sm-4 col-md-3 col-lg-3 text-center">
                                     <a href="{{ $service['route'] }}" class="text-decoration-none" {!! $service['attributes'] ?? '' !!}>
                                         <div class="service-box p-3 border rounded-3 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center transition">
                                             <img src="{{ asset('assets/images/apps/' . $service['icon']) }}" alt="{{ $service['title'] }}"
